@@ -1,0 +1,102 @@
+# LINKS
+
+https://gist.github.com/drmalex07/28de61c95b8ba7e5017c
+https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files
+https://coreos.com/os/docs/latest/getting-started-with-systemd.html
+https://fedoramagazine.org/systemd-getting-a-grip-on-units/
+
+
+
+# Create unit file, when started to /tmp/hello insert "Hello"
+
+   // create file /etc/systemd/system/hello.service containing:
+
+   [Unit]
+   Description=HelloApp
+
+   [Service]
+   ExecStart=/bin/bash -c "echo Hello > /tmp/hello"
+
+   [Install]
+   WantedBy=multi-user.target
+
+
+   // run
+
+   $ systemctl enable /etc/systemd/system/hello.service
+
+
+
+# When somebody connects to port 9999, writes date to a file
+
+   // create file /etc/systemd/system/timestamp9999.socket containing:
+
+      [Unit]
+      Description=TimeStamp9999
+
+      [Service]
+      ListenStream=127.0.0.1:9999
+      Accept=yes
+      ExecStart=/bin/bash -c "date > /tmp/lastaccessto9999"
+
+      [Install]
+      WantedBy=sockets.target
+
+
+   // create file /etc/systemd/system/timestam9999@.service containing:
+
+      [Unit]
+      Description=TimeStamp9999Socket
+      Requires=timestamp9999.socket
+
+      [Service]
+      Type=simple
+      ExecStart=/bin/bash -c "date > tmp/lastaccessto9999"
+      StandardInput=socket
+      StandardOutput=journal
+      TimeStopSec=5
+
+      [Install]
+      WantedBy=multi-user.target
+
+   $ systemctl enable /etc/systemd/system/timestamp9999.socket
+
+
+# Template @ 1 + name of file (eg. @hello, @bye, @ili)
+
+   // create file /etc/systemd/system/echo@.service containing:
+
+      [Unit]
+      Description=EchoApp
+
+      [Service]
+      ExecStart=/bin/bash -c "echo %i > /tmp/%i"
+
+      [Install]
+      WantedBy=multi-user.target
+
+   $ systemctl start /etc/systemd/system/echo@hello.service
+   $ systemctl start /etc/systemd/system/echo@bye.service
+   $ systemctl start /etc/systemd/system/echo@ili.service
+
+
+# Create 3 loopbacks w/ RAID 5
+
+   // create file /etc/systemd/system/loopbacksraid5.service containing:
+
+      [Unit]
+      Description=Raid5 on loosetup configuration
+
+      [Service]
+      ExecStartPre=/bin/bash -c "cd /"
+      ExecStartPre=/bin/bash -c "fallocate -l 100M disk0"
+      ExecStartPre=/bin/bash -c "losetup -f disk0"
+      ExecStartPre=/bin/bash -c "fallocate -l 100M disk1"
+      ExecStartPre=/bin/bash -c "losetup -f disk1"
+      ExecStartPre=/bin/bash -c "fallocate -l 100M disk2"
+      ExecStartPre=/bin/bash -c "losetup -f disk2"
+      ExecStart=/bin/bash -c "mdadm --create /dev/md0 --level=5 --raid-devices=3 /dev/loop0 /dev/loop1 /dev/loop2"
+
+      [Install]
+      WantedBy=multi-user.target
+

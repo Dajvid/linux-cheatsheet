@@ -1,0 +1,65 @@
+# Create a loopback device with 100 MB
+
+   $ fallocate -l 100M disk                                                      Allocates file w/ 100M size
+   $ losetup -f disk                                                             Creates loop on that file
+
+
+
+# Create GPT on that device with 5 small partitions
+
+   $ parted /dev/loop0                                                           Opens parted 
+   $ (parted) mktable gpt                                                        Creates partition table w/ name gpt
+   $ (parted) mkpart part1 ext4 0 20MB                                           Creates partition part1 w/ filesystem ext4 starting at 0 and ending at 20MB
+   $ (parted) mkpart part2 ext4 20MB 40MB                                        Creates partition part2 w/ filesystem ext4 starting at 20MB and ending at 40MB
+   $ (parted) mkpart part3 ext4 40MB 60MB                                        Creates partition part3 w/ filesystem ext4 starting at 40MB and ending at 60MB
+   $ (parted) mkpart part4 ext4 60MB 80MB                                        Creates partition part4 w/ filesystem ext4 starting at 60MB and ending at 80MB
+   $ (parted) mkpart part5 ext4 80MB 100MB                                       Creates partition part5 w/ filesystem ext4 starting at 80MB and ending at 100MB
+
+
+
+# Copy MBR partition table
+
+   // hybrid partition table
+
+   $ gdisk /dev/loop0                                                            Opens gdisk
+   $ (gdisk) x                                                                   Opens expert mode
+   $ (gdisk) r                                                                   Opens recovery mode
+   $ (gdisk) h                                                                   Setup hybrid MBR table
+
+   // Select 1 to 3 GPT partitions to be copied into MBR
+   // Complete dialogues
+   // DONE :)
+
+
+
+# Create PV, VG, LV + filesystem on 100% of LV
+
+   $ pvcreate /dev/loop0                                                         Creates physical volume
+   $ vgcreate vgroup /dev/loop0                                                  Creates volume group named vgroup
+   $ lvcreate -l 100%FREE vgroup -n lvolume                                      Creates logical volume named lvolume in vgroup
+   $ mkfs.ext4 /dev/vgroup/lvolume                                               Formats logical volume as ext.4 filesystem
+
+
+
+# Create new PV, extend VG, remove the first loopback
+
+   $ pvcreate /dev/loop1                                                         Creates physical volume
+   $ vgextend vgroup /dev/loop1                                                  Extends volumegroup 'vgroup' w/ physical volume /dev/loop1
+   $ pvmove /dev/loop0 /dev/loop1                                                Moves data from one PV to another
+   $ vgreduce vgroup /dev/loop0                                                  Deletes /dev/loop0 from volume group 'vgroup'
+
+
+
+# Create 200MB thin pool and a thin volume
+
+   $ lvcreate --type thin-pool -l 100%FREE vgroup -n lvthinpool                  Creates thinpool
+   $ lvcreate -V 400M --thinpool lvthinpool vgroup -n lvthinvolume               Creates thinvolume
+
+
+
+# Create snapshot of thin volume
+
+   $ lvcreate -s vgroup/lvthinvolume -n lvthinvolumesnapshot                     Creates thinvolume snapshot
+
+
+

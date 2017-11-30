@@ -1,0 +1,104 @@
+# BASICS
+
+# Processes
+
+   $ top                                  		// active processes
+   $ ps                                   		// active processes
+   $ htop                                 		// process management
+   $ netstat -tupln                       		// open ports
+   $ kill                                 		// send signals
+   $ pkill -u [login]                     		// kill all users processes
+   $ killall                              		// kill all processess beginning ..
+   
+   $ nice -n [-20 to 19]                  		// setting niceness
+   $ renice                               		// resetting niceness
+
+   $ strace                               		// trace process
+
+
+# Proc filesystem
+   
+   /proc                                  		// information about active processes 
+
+   $ ls fd                                		// show filedescriptors
+   $ ls maps                              		// show memory mapping
+
+
+# Users management
+
+   /etc/passwd                            		// users
+   /etc/group                             		// groups
+   /etc/shadow                            		// passwords
+
+   $ useradd                              		// add user
+   $ userdel                              		// delete
+   $ password [login]                     		// change password
+   $ usermod -L [login]                   		// lock account
+   $ w                                    		// active users
+
+
+# Filesystems
+
+   /etc                                   		// configuration files
+   /tmp                                   		// temporary files
+   /home                                  		// users home folder
+   /root                                  		// roots home folder
+   /lib64                                 		// libraries folder
+   /boot                                  		// kernel files
+   /dev                                   		// devices
+   /var                                   		// various
+
+   (man hier)
+
+   $ df -ah                               		// show filesystems and mounted path
+   $ lsof                                 		// list open files
+
+
+# Scheduling
+
+   /var/spool/cron/crontabs
+   /etc/crontab
+   
+   $ crontab -l                           		// list cron table
+   $ crontab -e                           		// edit cron table
+   $ crontab -e [user]                    		// edit users' cron table
+
+
+# Useful links
+
+   - catb.org
+   - serverfault.com
+   - stackexchange.com
+   - faqs.org
+
+
+# Manpages
+   
+   1: User commands
+   2: System calls
+   3: Library functions
+   4: Devices
+   5: Files
+   7: Overviews
+   8: Superuser and sysadmin commands
+
+
+# Tmux
+
+   $ tmux new -s [name]                   		// create session
+   $ tmux ls                              		// list sessions
+   $ tmux attach -t [name]                		// attach to session
+   $ tmux new-session -s [name]           		// create shared session
+
+   $ ctrl-b c                             		// create new window
+   $ ctrl-b ,                             		// rename window
+   $ ctrl-b [p, n, l]                     		// previous, next, list
+   $ ctrl-b %                             		// split vertically
+   $ ctrl-b : split-window                		// split horizontally
+   $ ctrl-b d                             		// detach from session
+   
+
+# Archiving
+
+   $ tar -zcvf [name.tar.gz] [path]       		// verbose, create, zip
+   $ tar -zxf [name.tar.gz]               		// decompress

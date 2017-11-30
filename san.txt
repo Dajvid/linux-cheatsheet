@@ -1,0 +1,46 @@
+# HELP
+- install targetcli (special shell)
+- create loop
+- backstores
+- block
+- create name dev [readonly]
+- cd iscsi
+- create
+- luns - loop0 // cd iqn... tpg1.. luns.. create storage_object=/backst...
+- acl - who's got rights
+- portals ??
+- iscsiadm or iscsi-initiator-utils - for initiator
+
+
+# You will need two installed nodes (A, B)
+
+   // install 2 VM with CentOS
+
+
+# Setup networking between nodes
+
+   // some vmmanager - setting up local network
+   // easier - via internet
+
+# Node A should act as SAN - 250 MiB
+
+   // create loop
+
+   > cd /backstores/block
+   > create name=shareddisk dev=/dev/loop0
+   > cd /iscsi
+   > create
+   > cd /iscsi/iqn..../tpg1/luns
+   > create storage_object=/backstores/block/shareddisk
+   > cd /iscsi/iqn..../tpg1/acls
+   > create wwn=iqnofclient....
+   
+# Mount exported device on B + create filesystem
+
+   // when probles - stop firewall
+   ($systemctl stop firewalld)
+
+   $ iscsiadm --mode discoverydb --type sendtargets --portal 192.168.1.x --discover
+   $ iscsiadm --mode node --targetname iqn.... --portal 192.168.1.x:port --login
+   $
+

@@ -1,0 +1,31 @@
+# Create encrypted loopback device
+
+   // create loopback - fallocate + losetup
+
+   $ cryptsetup luksFormat /dev/loop0
+   $ cryptsetup open /dev/loop0 name --type luks
+
+
+
+# Add second password to disk
+
+   $ cryptsetup luksAddKey /dev/loop0
+
+
+
+# Backup crypto headers
+
+   $ cryptsetup luksHeaderBackup /dev/loop1 --header-backup-file backuploop1
+
+
+
+# Remove first password
+
+   $ cryptsetup luksKillSlot /dev/loop1 0
+
+
+
+# Change password and restore backup
+
+   $ cryptsetup luksChangeKey /dev/loop1
+   $ cryptsetup luksHeaderRestore /dev/loop1 --header-backup-file backuploop1

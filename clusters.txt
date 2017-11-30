@@ -1,0 +1,5 @@
+# HELP
+- cluster from scratch
+- corosync
+- pacemakerd
+- psc - cluster configuration
