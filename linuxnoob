@@ -1,4 +1,27 @@
+# USEFUL LINKS
+
+   - http://wiki.archlinux.org/index.php/General_recommendations
+   - http://wiki.archlinux.org/index.php/List_of_applications
+   - http://www.tldp.org/LDP/abs/html/abs-guide.html
+   - http://serverfault.com
+   - https://lobste.rs/
+
+
 # BASICS
+
+# Manpages + basic info
+   
+   1: User commands
+   2: System calls
+   3: Library functions
+   4: Devices
+   5: Files
+   7: Overviews
+   8: Superuser and sysadmin commands
+
+   $ whatis [command]                           // one-line description of a command
+   $ apropos [searchterm]                       // shows manpages speaking about searchterm
+
 
 # Processes
 
@@ -72,17 +95,6 @@
    - faqs.org
 
 
-# Manpages
-   
-   1: User commands
-   2: System calls
-   3: Library functions
-   4: Devices
-   5: Files
-   7: Overviews
-   8: Superuser and sysadmin commands
-
-
 # Tmux
 
    $ tmux new -s [name]                   		// create session
@@ -102,3 +114,39 @@
 
    $ tar -zcvf [name.tar.gz] [path]       		// verbose, create, zip
    $ tar -zxf [name.tar.gz]               		// decompress
+
+
+# Recording shell sessions
+
+   $ script [name] [--timing=name2]             // starts recording until CTRL-D
+   $ script -c [single command] [name] [timing] // using in noniteractive environments
+   $ scriptreplay -r name [--timing=name2]      // replays shell session
+
+
+# List open files
+
+   $ lsof [filename]                            // which processes have file open
+   $ lsof -p PID                                // which files have process open
+   $ lsof -u username                           // which files does have user open
+   $ lsof -i :port                              // which processes are listeing on port
+   $ lsof -i tcp                                // which processes use tcp
+
+
+# Monit
+
+   /etc/monitcr
+
+
+# Systemd
+
+   $ journalctl -xn -u [unit] -b -f --since [time ago]
+
+
+# Ansible - automation
+
+   // TODO
+
+# Tee
+
+   $ tee [file]                                 // splits output
+   $ tee -a [file]                              // splits output and append
