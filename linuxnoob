@@ -1,13 +1,20 @@
-# USEFUL LINKS
-
+# USEFUL LINKS 
    - http://wiki.archlinux.org/index.php/General_recommendations
    - http://wiki.archlinux.org/index.php/List_of_applications
    - http://www.tldp.org/LDP/abs/html/abs-guide.html
    - http://serverfault.com
    - https://lobste.rs/
+   - http://catb.org
+   - http://stackexchange.com
+   - http://faqs.org
 
 
 # BASICS
+
+# Boot messages
+
+   /var/log/dmesg
+
 
 # Manpages + basic info
    
@@ -59,6 +66,20 @@
    $ usermod -L [login]                   		// lock account
    $ w                                    		// active users
 
+   $ groupadd
+   $ groupdel
+   $ groupmod
+   $ groups [login]                             // shows groups in which is user
+
+   $ su                                         // switch user
+
+
+# Disk management
+
+   $ fdisk
+   $ gdisk
+   $ parted
+
 
 # Filesystems
 
@@ -71,10 +92,25 @@
    /dev                                   		// devices
    /var                                   		// various
 
+   /etc/fstab                                   // filesystem table
+
    (man hier)
 
    $ df -ah                               		// show filesystems and mounted path
    $ lsof                                 		// list open files
+
+   $ mkfs -t [type] [device]                    // make file system
+   $ mount [device] [mountpoint]                // mount a device
+
+   $ lsblk -f                                   // list block devices - uuid + label
+   $ blkid                                      // same but only uuid
+   $ e2label                                    // creating labels
+
+
+# Packages
+
+   $ dpkg                                       // list installed packages
+   $ apt-list search [name]                     // searches for package
 
 
 # Scheduling
@@ -87,12 +123,14 @@
    $ crontab -e [user]                    		// edit users' cron table
 
 
-# Useful links
+# Logging
 
-   - catb.org
-   - serverfault.com
-   - stackexchange.com
-   - faqs.org
+   $ syslogd
+   $ rsylog
+   $ syslog-ng
+
+   $ logger                                     // generate your own log messages
+   $ logrotate                                  // automatically prune messages
 
 
 # Tmux
@@ -146,7 +184,56 @@
 
    // TODO
 
+
 # Tee
 
    $ tee [file]                                 // splits output
    $ tee -a [file]                              // splits output and append
+
+
+
+# NETWORKING
+
+# IP address
+   
+   $ ip address                                 // determines ip address
+   $ ifconfig                                   // same
+
+
+# Private IP address space
+
+   10.0.0.0 - 10.255.255.255
+   172.16.0.0 - 172.31.255.255
+   192.168.0.0 - 192.168.255.255
+
+
+# Hostnames
+
+   $ hostname
+   $ hostname -f
+   $ uname -a
+
+
+# DNS
+
+   /etc/hosts
+   /etc/nsswitch.conf
+
+   $ host
+   $ dig
+
+
+# Configuring network interfaces
+
+   /etc/sysconfig/network-scripts/ifcfg-DEVICE  // RHEL
+   /etc/network/interfaces                      // Ubuntu
+
+   $ ifup
+   $ ifdown
+
+
+# SSH
+
+   /etc/ssh/sshd-config                         // config file
+
+   $ ssh-keygen -t rsa -b 4096                  // generate rsa key (client)
