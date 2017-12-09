@@ -237,3 +237,20 @@
    /etc/ssh/sshd-config                         // config file
 
    $ ssh-keygen -t rsa -b 4096                  // generate rsa key (client)
+
+
+# VIRTUALIZATION
+
+# LXC
+
+   /var/cache/lxc
+   /var/lib/lxc
+   /usr/share/lxc/templates
+
+   $ lxc-create -t ubuntu -n containername      // creates new container
+   $ lxc-ls --fancy                             // lists containers
+   $ lxc-start -n containername -d -c /dev/tty4 // starts container, daemon, console /dev/tty4
+   $ lxc-stop -n containername [-k]             // stops container (-k kills)
+   $ lxc-freeze -n containername                // freeze
+   $ lxc-unfreeze -n containername              // unfreeze
+   $ lxc-attach -n containername
