@@ -94,6 +94,8 @@
 
    /etc/fstab                                   // filesystem table
 
+   /etc/login.defs                              // change default file mod (UMASK)
+
    (man hier)
 
    $ df -ah                               		// show filesystems and mounted path
@@ -237,6 +239,7 @@
    /etc/ssh/sshd-config                         // config file
 
    $ ssh-keygen -t rsa -b 4096                  // generate rsa key (client)
+   $ ssh -N -D 8080 login@host -p 443           // bind local port to ssh on host (for proxy)
 
 
 # VIRTUALIZATION
