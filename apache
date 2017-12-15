@@ -1,1 +1,10 @@
 # BASIC
+
+   /etc/httpd/conf/httpd.conf
+
+   Environment Group: Basic Web Server
+   $ yum group install "Web Server"
+
+
+   $ apachectl start                            // start apache server
+   $ apachectl graceful                         // graceful restart
