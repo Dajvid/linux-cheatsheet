@@ -1,4 +1,5 @@
 # USEFUL LINKS 
+
    - http://wiki.archlinux.org/index.php/General_recommendations
    - http://wiki.archlinux.org/index.php/List_of_applications
    - http://www.tldp.org/LDP/abs/html/abs-guide.html
@@ -182,11 +183,6 @@
    $ journalctl -xn -u [unit] -b -f --since [time ago]
 
 
-# Ansible - automation
-
-   // TODO
-
-
 # Tee
 
    $ tee [file]                                 // splits output
@@ -236,7 +232,9 @@
 
 # SSH
 
-   /etc/ssh/sshd-config                         // config file
+   /etc/ssh/ssh_config                          // system-wide config file
+   ~/.ssh/config                                // user config file
+   /etc/ssh/sshd-config                         
 
    $ ssh-keygen -t rsa -b 4096                  // generate rsa key (client)
    $ ssh -N -D 8080 login@host -p 443           // bind local port to ssh on host (for proxy)
