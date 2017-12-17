@@ -255,3 +255,13 @@
    $ lxc-freeze -n containername                // freeze
    $ lxc-unfreeze -n containername              // unfreeze
    $ lxc-attach -n containername
+
+
+# DOCKER
+
+   $ docker run -d -p 8080:80 --name <name> <image>
+   $ docker start <name|id>                     // start container
+   $ docker stop <name|id>                      // stop container
+   $ docker ps [-a]                             // list containers
+   $ docker rm <name|id>
+   $ docker build -t <path>
