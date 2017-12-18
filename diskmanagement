@@ -19,6 +19,8 @@
 
 # Copy MBR partition table
 
+   https://www.cyberciti.biz/faq/howto-copy-mbr/
+
    // hybrid partition table
 
    $ gdisk /dev/loop0                                                            Opens gdisk
@@ -63,3 +65,9 @@
 
 
 
+# RAID
+   
+   https://www.digitalocean.com/community/tutorials/how-to-create-raid-arrays-with-mdadm-on-ubuntu-16-04
+
+   /proc/mdstat                                                                  Active RAIDS
+   /etc/mdadm/mdadm.conf                                                         Conf file
