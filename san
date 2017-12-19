@@ -1,3 +1,5 @@
+https://www.rootusers.com/how-to-configure-an-iscsi-target-and-initiator-in-linux/
+
 # HELP
 - install targetcli (special shell)
 - create loop
@@ -26,10 +28,12 @@
 
    // create loop
 
+   $ targetcli
+   
    > cd /backstores/block
    > create name=shareddisk dev=/dev/loop0
    > cd /iscsi
-   > create
+   > create [iqn.2017-12.com.vut.fit:target]
    > cd /iscsi/iqn..../tpg1/luns
    > create storage_object=/backstores/block/shareddisk
    > cd /iscsi/iqn..../tpg1/acls
@@ -42,5 +46,11 @@
 
    $ iscsiadm --mode discoverydb --type sendtargets --portal 192.168.1.x --discover
    $ iscsiadm --mode node --targetname iqn.... --portal 192.168.1.x:port --login
-   $
 
+   // view active session
+   $ iscsiadm -m session -P 0
+
+   // logout
+   $ iscsiadm -m node -u
+
+   SETUP automount in /etc/fstab

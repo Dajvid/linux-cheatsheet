@@ -5,6 +5,7 @@
    $ cryptsetup luksFormat /dev/loop0
    $ cryptsetup open /dev/loop0 name --type luks
 
+   /dev/mapper/name
 
 
 # Add second password to disk
@@ -12,20 +13,24 @@
    $ cryptsetup luksAddKey /dev/loop0
 
 
-
 # Backup crypto headers
 
-   $ cryptsetup luksHeaderBackup /dev/loop1 --header-backup-file backuploop1
-
+   $ cryptsetup luksHeaderBackup /dev/loop0 --header-backup-file backuploop0
 
 
 # Remove first password
 
-   $ cryptsetup luksKillSlot /dev/loop1 0
-
+   $ cryptsetup luksKillSlot /dev/loop0 0
+   or 
+   $ cryptsetup luksRemoveKey /dev/loop0
 
 
 # Change password and restore backup
 
-   $ cryptsetup luksChangeKey /dev/loop1
-   $ cryptsetup luksHeaderRestore /dev/loop1 --header-backup-file backuploop1
+   $ cryptsetup luksChangeKey /dev/loop0
+   $ cryptsetup luksHeaderRestore /dev/loop0 --header-backup-file backuploop0
+
+
+# Show luks header
+
+   $ cryptsetup luksDump /dev/loop0

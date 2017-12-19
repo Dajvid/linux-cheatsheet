@@ -4,7 +4,6 @@
    $ losetup -f disk                                                             Creates loop on that file
 
 
-
 # Create GPT on that device with 5 small partitions
 
    $ parted /dev/loop0                                                           Opens parted 
@@ -14,7 +13,6 @@
    $ (parted) mkpart part3 ext4 40MB 60MB                                        Creates partition part3 w/ filesystem ext4 starting at 40MB and ending at 60MB
    $ (parted) mkpart part4 ext4 60MB 80MB                                        Creates partition part4 w/ filesystem ext4 starting at 60MB and ending at 80MB
    $ (parted) mkpart part5 ext4 80MB 100MB                                       Creates partition part5 w/ filesystem ext4 starting at 80MB and ending at 100MB
-
 
 
 # Copy MBR partition table
@@ -33,14 +31,12 @@
    // DONE :)
 
 
-
 # Create PV, VG, LV + filesystem on 100% of LV
 
    $ pvcreate /dev/loop0                                                         Creates physical volume
    $ vgcreate vgroup /dev/loop0                                                  Creates volume group named vgroup
    $ lvcreate -l 100%FREE vgroup -n lvolume                                      Creates logical volume named lvolume in vgroup
    $ mkfs.ext4 /dev/vgroup/lvolume                                               Formats logical volume as ext.4 filesystem
-
 
 
 # Create new PV, extend VG, remove the first loopback
@@ -51,18 +47,15 @@
    $ vgreduce vgroup /dev/loop0                                                  Deletes /dev/loop0 from volume group 'vgroup'
 
 
-
 # Create 200MB thin pool and a thin volume
 
    $ lvcreate --type thin-pool -l 100%FREE vgroup -n lvthinpool                  Creates thinpool
    $ lvcreate -V 400M --thinpool lvthinpool vgroup -n lvthinvolume               Creates thinvolume
 
 
-
 # Create snapshot of thin volume
 
    $ lvcreate -s vgroup/lvthinvolume -n lvthinvolumesnapshot                     Creates thinvolume snapshot
-
 
 
 # RAID
@@ -71,3 +64,26 @@
 
    /proc/mdstat                                                                  Active RAIDS
    /etc/mdadm/mdadm.conf                                                         Conf file
+
+   $ mdadm --create /dev/md0 -l <raidnum> -n <numdevices> /dev/loopX /dev/loopY  Creates RAID
+   $ mdadm --detail /dev/md0                                                     Shows detail about RAID
+   $ mdadm /dev/md0 -f /dev/loopX                                                Set disk as faulty
+   $ mdadm --add-spare                                                           Add as spare device
+
+
+# Filesystems
+
+   https://btrfs.wiki.kernel.org/index.php/Using_Btrfs_with_Multiple_Devices
+   
+   $ mount LABEL=/home /homemount -amount -remount,ro
+
+   $ mkfs.btrfs -d raid5 /dev/loop0 /dev/loop1 /dev/loop2
+   $ btrfs filesystem show
+   $ btrfs subvolume ...
+   $ btrfs sub list /mnt
+   $ btrfs device add ...
+   $ btrfs balance start -dconvert=raid5 -mconvert=raid5 /mnt
+   $ btrfs subvolume snapshot /mnt/subvolume /mnt/subvolume/snapshot
+
+   $ btrfs fi show
+   $ btrfs fi df

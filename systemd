@@ -1,10 +1,11 @@
 # LINKS
 
+https://unix.stackexchange.com/questions/186899/how-to-wait-for-a-dev-video0-before-starting-a-service
+
 https://gist.github.com/drmalex07/28de61c95b8ba7e5017c
 https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files
 https://coreos.com/os/docs/latest/getting-started-with-systemd.html
 https://fedoramagazine.org/systemd-getting-a-grip-on-units/
-
 
 
 # Create unit file, when started to /tmp/hello insert "Hello"
@@ -20,11 +21,9 @@ https://fedoramagazine.org/systemd-getting-a-grip-on-units/
    [Install]
    WantedBy=multi-user.target
 
-
    // run
 
    $ systemctl enable /etc/systemd/system/hello.service
-
 
 
 # When somebody connects to port 9999, writes date to a file
