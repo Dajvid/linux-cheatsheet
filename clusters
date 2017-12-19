@@ -3,3 +3,109 @@
 - corosync
 - pacemakerd
 - psc - cluster configuration
+
+
+# + node 1, * node 2
+
+## Setup firewall (+, *)
+
+$ firewall-cmd --permanent --add-service=high-availability
+$ firewall-cmd --reload
+
+## Enable pcs Daemon (+, *)
+
+$ systemctl start pcsd.service
+$ systemctl enable pcsd.service
+
+## Change password for hacluster user (+, *)
+
+$ passwd hacluster
+
+## Configure Corosync (+)
+
+$ pcs cluster auth node1 node2
+$ pcs cluster setup --name mycluster node1 node2
+
+## Start cluster (+) 
+
+$ pcs cluster start --all
+
+(pcs cluster stop node1)
+
+## Verify Corosync installation
+
+$ corosync-cfgtool -s
+$ corosync-cmapctl  | grep members
+$ pcs status corosync
+$ pcs status
+
+## Diasble STONITH
+
+$ pcs property set stonith-enabled=false
+
+$ crm_verify -L
+
+## Add a resource - IP Address
+
+$ pcs resource create ClusterIP ocf:heartbeat:IPaddr2 ip=192.168.56.42 cidr_netmask=32 op monitor interval=30s
+
+(pcs resource standards / providers / agents )
+
+## Prevent resources from moving after recovery
+
+$ pcs resource defaults resource-stickiness=100
+
+## Install Apache (+, *)
+
+$ yum install -y httpd wget
+$ firewall-cmd --permanent --add-service=http
+$ firewall-cmd --reload
+
+## Document (+, *)
+
+/var/www/html/index.html
+
+<html>
+    <body>My Test Site - $(hostname)</body>
+</html>
+
+## Enable Apache status URL (+, *)
+
+/etc/httpd/conf.d/status.conf
+
+<Location /server-status>
+    SetHandler server-status
+    Require local
+</Location>
+
+## Configure Cluster (+)
+
+$ pcs resource create WebSite ocf:heartbeat:apache configfile=/etc/httpd/conf/httpd.conf statusurl="http://localhost/server-status" op monitor interval=1min
+
+## Edit global timeout (+)
+
+$ pcs resource op defaults timeout=240s
+
+## Ensure Resources Run on the same host (+)
+
+$ pcs constraint colocation add WebSite with ClusterIP INFINITY
+
+## Set order constraint
+
+$ pcs constraint order ClusterIP then WebSite
+
+## Set location constrainit
+
+$ pcs constraint location WebSite prefers node1=50
+$ crm_simulate - check playtime
+
+## Move resources manually
+
+$ pcs constraint location WebSite prefers node2=INFINITY
+
+## Check constraints and remove
+
+$ pcs constraint --full
+$ pcs constraint remove id
+
+## Setup STONITH
