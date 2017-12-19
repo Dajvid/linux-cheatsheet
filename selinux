@@ -1,0 +1,14 @@
+   /var/log/messages 
+   /var/log/audit/audit.log
+
+   $ sealert -a /var/log/audit/audit.log
+   
+   $ getenforce
+   $ setenforce 0/1
+   $ sestatus
+   $ semanage
+   $ getsebool
+   $ setsebool
+
+
+   $ semanage port -a -t ssh_port_t -p tcp 222
