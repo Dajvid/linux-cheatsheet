@@ -1,0 +1,4 @@
+
+   iptables -N "newchain"                                      // pattern matching on selected chain
+   iptables -P INPUT DROP                                      // default policy for chain
+   iptables ... -m state --state established, related          // state firewall
