@@ -7,6 +7,8 @@
 
    /dev/mapper/name
 
+   $ cryptsetup --key-file /keyfile luksOpen /dev/md0 crypteddisk
+
 
 # Add second password to disk
 
