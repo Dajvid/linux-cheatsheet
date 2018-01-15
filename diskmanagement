@@ -70,6 +70,16 @@
    $ mdadm /dev/md0 -f /dev/loopX                                                Set disk as faulty
    $ mdadm --add-spare                                                           Add as spare device
 
+   $ mdadm --detail --scan --verbose >>/etc/mdadm.conf
+   
+   or 
+   $ mdadm --examine --scan >> /etc/mdadm.conf
+   $ dracut -f or $ dracut --mdadmconf --force /boot/initramfs-$(uname -r).img $(uname -r)
+
+   or
+   $ mdadm --assemble --scan
+
+   $ mdadm --manage /dev/md127 --re-add /dev/sdd1 
 
 # Filesystems
 
