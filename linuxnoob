@@ -193,6 +193,8 @@
 
 # NETWORKING
 
+   - http://www.krizna.com/centos/setup-network-centos-7/
+
 # IP address
    
    $ ip address                                 // determines ip address
